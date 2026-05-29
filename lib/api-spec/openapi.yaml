@@ -1,0 +1,1066 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: Shree Overseas Education API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: testimonials
+    description: Testimonials management
+  - name: team
+    description: Team members management
+  - name: services
+    description: Services management
+  - name: destinations
+    description: Study destinations management
+  - name: universities
+    description: Universities management
+  - name: success-stories
+    description: Success stories management
+  - name: videos
+    description: Homepage videos management
+  - name: gallery
+    description: Gallery/media management
+  - name: consultations
+    description: Consultation bookings
+  - name: enquiries
+    description: Contact enquiries
+  - name: stats
+    description: Dashboard statistics
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # Testimonials
+  /testimonials:
+    get:
+      operationId: listTestimonials
+      tags: [testimonials]
+      summary: List all testimonials
+      responses:
+        "200":
+          description: List of testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+    post:
+      operationId: createTestimonial
+      tags: [testimonials]
+      summary: Create a testimonial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestimonialInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+
+  /testimonials/{id}:
+    get:
+      operationId: getTestimonial
+      tags: [testimonials]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Testimonial
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+    patch:
+      operationId: updateTestimonial
+      tags: [testimonials]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestimonialUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+    delete:
+      operationId: deleteTestimonial
+      tags: [testimonials]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Team Members
+  /team:
+    get:
+      operationId: listTeamMembers
+      tags: [team]
+      summary: List all team members
+      responses:
+        "200":
+          description: List of team members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamMember"
+    post:
+      operationId: createTeamMember
+      tags: [team]
+      summary: Create a team member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamMemberInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamMember"
+
+  /team/{id}:
+    patch:
+      operationId: updateTeamMember
+      tags: [team]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamMemberUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamMember"
+    delete:
+      operationId: deleteTeamMember
+      tags: [team]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Services
+  /services:
+    get:
+      operationId: listServices
+      tags: [services]
+      summary: List all services
+      responses:
+        "200":
+          description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Service"
+    post:
+      operationId: createService
+      tags: [services]
+      summary: Create a service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+
+  /services/{id}:
+    patch:
+      operationId: updateService
+      tags: [services]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+    delete:
+      operationId: deleteService
+      tags: [services]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Study Destinations
+  /destinations:
+    get:
+      operationId: listDestinations
+      tags: [destinations]
+      summary: List all study destinations
+      responses:
+        "200":
+          description: List of destinations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Destination"
+    post:
+      operationId: createDestination
+      tags: [destinations]
+      summary: Create a destination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DestinationInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Destination"
+
+  /destinations/{id}:
+    patch:
+      operationId: updateDestination
+      tags: [destinations]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DestinationUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Destination"
+    delete:
+      operationId: deleteDestination
+      tags: [destinations]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Universities
+  /universities:
+    get:
+      operationId: listUniversities
+      tags: [universities]
+      summary: List all universities
+      parameters:
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of universities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/University"
+    post:
+      operationId: createUniversity
+      tags: [universities]
+      summary: Create a university
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UniversityInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/University"
+
+  /universities/{id}:
+    patch:
+      operationId: updateUniversity
+      tags: [universities]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UniversityUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/University"
+    delete:
+      operationId: deleteUniversity
+      tags: [universities]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Success Stories
+  /success-stories:
+    get:
+      operationId: listSuccessStories
+      tags: [success-stories]
+      summary: List all success stories
+      responses:
+        "200":
+          description: List of success stories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SuccessStory"
+    post:
+      operationId: createSuccessStory
+      tags: [success-stories]
+      summary: Create a success story
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SuccessStoryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessStory"
+
+  /success-stories/{id}:
+    patch:
+      operationId: updateSuccessStory
+      tags: [success-stories]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SuccessStoryUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessStory"
+    delete:
+      operationId: deleteSuccessStory
+      tags: [success-stories]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Videos
+  /videos:
+    get:
+      operationId: listVideos
+      tags: [videos]
+      summary: List all homepage videos
+      responses:
+        "200":
+          description: List of videos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Video"
+    post:
+      operationId: createVideo
+      tags: [videos]
+      summary: Add a video
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VideoInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Video"
+
+  /videos/{id}:
+    delete:
+      operationId: deleteVideo
+      tags: [videos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Gallery
+  /gallery:
+    get:
+      operationId: listGalleryItems
+      tags: [gallery]
+      summary: List all gallery items
+      responses:
+        "200":
+          description: List of gallery items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryItem"
+    post:
+      operationId: createGalleryItem
+      tags: [gallery]
+      summary: Add a gallery item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GalleryItemInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
+
+  /gallery/{id}:
+    delete:
+      operationId: deleteGalleryItem
+      tags: [gallery]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Consultations
+  /consultations:
+    get:
+      operationId: listConsultations
+      tags: [consultations]
+      summary: List all consultation bookings
+      responses:
+        "200":
+          description: List of consultation bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Consultation"
+    post:
+      operationId: createConsultation
+      tags: [consultations]
+      summary: Book a consultation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsultationInput"
+      responses:
+        "201":
+          description: Booked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Consultation"
+
+  /consultations/{id}:
+    patch:
+      operationId: updateConsultation
+      tags: [consultations]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsultationUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Consultation"
+    delete:
+      operationId: deleteConsultation
+      tags: [consultations]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Enquiries
+  /enquiries:
+    get:
+      operationId: listEnquiries
+      tags: [enquiries]
+      summary: List all enquiries
+      responses:
+        "200":
+          description: List of enquiries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Enquiry"
+    post:
+      operationId: createEnquiry
+      tags: [enquiries]
+      summary: Submit an enquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnquiryInput"
+      responses:
+        "201":
+          description: Submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enquiry"
+
+  /enquiries/{id}:
+    patch:
+      operationId: updateEnquiry
+      tags: [enquiries]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnquiryUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enquiry"
+    delete:
+      operationId: deleteEnquiry
+      tags: [enquiries]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # Dashboard stats
+  /stats:
+    get:
+      operationId: getDashboardStats
+      tags: [stats]
+      summary: Get dashboard statistics
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Testimonial:
+      type: object
+      required: [id, name, rating, message, country, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        rating: { type: integer }
+        message: { type: string }
+        country: { type: string }
+        university: { type: ["string", "null"] }
+        photo: { type: ["string", "null"] }
+        isApproved: { type: boolean }
+        createdAt: { type: string }
+
+    TestimonialInput:
+      type: object
+      required: [name, rating, message, country]
+      properties:
+        name: { type: string }
+        rating: { type: integer }
+        message: { type: string }
+        country: { type: string }
+        university: { type: string }
+        photo: { type: string }
+        isApproved: { type: boolean }
+
+    TestimonialUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        rating: { type: integer }
+        message: { type: string }
+        country: { type: string }
+        university: { type: string }
+        photo: { type: string }
+        isApproved: { type: boolean }
+
+    TeamMember:
+      type: object
+      required: [id, name, designation, order]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        designation: { type: string }
+        description: { type: ["string", "null"] }
+        photo: { type: ["string", "null"] }
+        order: { type: integer }
+
+    TeamMemberInput:
+      type: object
+      required: [name, designation]
+      properties:
+        name: { type: string }
+        designation: { type: string }
+        description: { type: string }
+        photo: { type: string }
+        order: { type: integer }
+
+    TeamMemberUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        designation: { type: string }
+        description: { type: string }
+        photo: { type: string }
+        order: { type: integer }
+
+    Service:
+      type: object
+      required: [id, title, description, icon, order]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: string }
+        shortDescription: { type: ["string", "null"] }
+        detailedDescription: { type: ["string", "null"] }
+        detailImage: { type: ["string", "null"] }
+        icon: { type: string }
+        order: { type: integer }
+
+    ServiceInput:
+      type: object
+      required: [title, description, icon]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        shortDescription: { type: string }
+        detailedDescription: { type: string }
+        detailImage: { type: string }
+        icon: { type: string }
+        order: { type: integer }
+
+    ServiceUpdate:
+      type: object
+      properties:
+        title: { type: string }
+        description: { type: string }
+        shortDescription: { type: string }
+        detailedDescription: { type: string }
+        detailImage: { type: string }
+        icon: { type: string }
+        order: { type: integer }
+
+    Destination:
+      type: object
+      required: [id, country, description, image, highlights]
+      properties:
+        id: { type: integer }
+        country: { type: string }
+        description: { type: string }
+        image: { type: string }
+        flag: { type: ["string", "null"] }
+        highlights: { type: string }
+        universities: { type: integer }
+        order: { type: integer }
+
+    DestinationInput:
+      type: object
+      required: [country, description, image, highlights]
+      properties:
+        country: { type: string }
+        description: { type: string }
+        image: { type: string }
+        flag: { type: string }
+        highlights: { type: string }
+        universities: { type: integer }
+        order: { type: integer }
+
+    DestinationUpdate:
+      type: object
+      properties:
+        country: { type: string }
+        description: { type: string }
+        image: { type: string }
+        flag: { type: string }
+        highlights: { type: string }
+        universities: { type: integer }
+        order: { type: integer }
+
+    University:
+      type: object
+      required: [id, name, country, logo]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        country: { type: string }
+        logo: { type: string }
+        website: { type: ["string", "null"] }
+        description: { type: ["string", "null"] }
+        isPartner: { type: boolean }
+
+    UniversityInput:
+      type: object
+      required: [name, country, logo]
+      properties:
+        name: { type: string }
+        country: { type: string }
+        logo: { type: string }
+        website: { type: string }
+        description: { type: string }
+        isPartner: { type: boolean }
+
+    UniversityUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        country: { type: string }
+        logo: { type: string }
+        website: { type: string }
+        description: { type: string }
+        isPartner: { type: boolean }
+
+    SuccessStory:
+      type: object
+      required: [id, studentName, country, university, course, year]
+      properties:
+        id: { type: integer }
+        studentName: { type: string }
+        country: { type: string }
+        university: { type: string }
+        course: { type: string }
+        year: { type: integer }
+        story: { type: ["string", "null"] }
+        photo: { type: ["string", "null"] }
+        videoUrl: { type: ["string", "null"] }
+        visaType: { type: ["string", "null"] }
+
+    SuccessStoryInput:
+      type: object
+      required: [studentName, country, university, course, year]
+      properties:
+        studentName: { type: string }
+        country: { type: string }
+        university: { type: string }
+        course: { type: string }
+        year: { type: integer }
+        story: { type: string }
+        photo: { type: string }
+        videoUrl: { type: string }
+        visaType: { type: string }
+
+    SuccessStoryUpdate:
+      type: object
+      properties:
+        studentName: { type: string }
+        country: { type: string }
+        university: { type: string }
+        course: { type: string }
+        year: { type: integer }
+        story: { type: string }
+        photo: { type: string }
+        videoUrl: { type: string }
+        visaType: { type: string }
+
+    Video:
+      type: object
+      required: [id, title, url, order]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        url: { type: string }
+        thumbnail: { type: ["string", "null"] }
+        order: { type: integer }
+
+    VideoInput:
+      type: object
+      required: [title, url]
+      properties:
+        title: { type: string }
+        url: { type: string }
+        thumbnail: { type: string }
+        order: { type: integer }
+
+    GalleryItem:
+      type: object
+      required: [id, title, url, type]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        url: { type: string }
+        type: { type: string }
+        category: { type: ["string", "null"] }
+
+    GalleryItemInput:
+      type: object
+      required: [title, url, type]
+      properties:
+        title: { type: string }
+        url: { type: string }
+        type: { type: string }
+        category: { type: string }
+
+    Consultation:
+      type: object
+      required: [id, fullName, mobile, email, preferredCountry, courseInterest, preferredDate, preferredTime, createdAt]
+      properties:
+        id: { type: integer }
+        fullName: { type: string }
+        mobile: { type: string }
+        email: { type: string }
+        preferredCountry: { type: string }
+        courseInterest: { type: string }
+        preferredDate: { type: string }
+        preferredTime: { type: string }
+        message: { type: ["string", "null"] }
+        status: { type: string }
+        createdAt: { type: string }
+
+    ConsultationInput:
+      type: object
+      required: [fullName, mobile, email, preferredCountry, courseInterest, preferredDate, preferredTime]
+      properties:
+        fullName: { type: string }
+        mobile: { type: string }
+        email: { type: string }
+        preferredCountry: { type: string }
+        courseInterest: { type: string }
+        preferredDate: { type: string }
+        preferredTime: { type: string }
+        message: { type: string }
+
+    ConsultationUpdate:
+      type: object
+      properties:
+        status: { type: string }
+
+    Enquiry:
+      type: object
+      required: [id, name, email, mobile, message, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string }
+        mobile: { type: string }
+        subject: { type: ["string", "null"] }
+        message: { type: string }
+        status: { type: string }
+        createdAt: { type: string }
+
+    EnquiryInput:
+      type: object
+      required: [name, email, mobile, message]
+      properties:
+        name: { type: string }
+        email: { type: string }
+        mobile: { type: string }
+        subject: { type: string }
+        message: { type: string }
+
+    EnquiryUpdate:
+      type: object
+      properties:
+        status: { type: string }
+
+    DashboardStats:
+      type: object
+      required: [totalConsultations, totalEnquiries, totalTestimonials, totalSuccessStories, totalUniversities, totalDestinations, pendingConsultations, newEnquiries]
+      properties:
+        totalConsultations: { type: integer }
+        totalEnquiries: { type: integer }
+        totalTestimonials: { type: integer }
+        totalSuccessStories: { type: integer }
+        totalUniversities: { type: integer }
+        totalDestinations: { type: integer }
+        pendingConsultations: { type: integer }
+        newEnquiries: { type: integer }
