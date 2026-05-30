@@ -4,6 +4,8 @@ import { MapPin, GraduationCap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
+const slugify = (value: string) => value.toLowerCase().replace(/\s+/g, "-");
+
 export default function Destinations() {
   const { data: destinations, isLoading } = useListDestinations();
 
@@ -33,7 +35,7 @@ export default function Destinations() {
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {destinations?.map((dest) => (
-                <div key={dest.id} id={dest.country.toLowerCase()} className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row scroll-mt-24">
+                <div key={dest.id} id={slugify(dest.country)} className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row scroll-mt-24">
                   <div className="w-full md:w-2/5 aspect-[4/3] md:aspect-auto relative">
                     <img 
                       src={dest.image} 

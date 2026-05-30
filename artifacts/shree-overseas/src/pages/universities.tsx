@@ -16,12 +16,19 @@ export default function Universities() {
   const { data: universities, isLoading } = useListUniversities(
     activeTab !== "All" ? { country: activeTab } : undefined
   );
+  const [expandedUniversityIds, setExpandedUniversityIds] = useState<number[]>([]);
 
   const countries = ["All", ...(destinations?.map(d => d.country) || [])];
 
   const filteredUniversities = activeTab === "All" 
     ? universities 
     : universities?.filter(u => u.country === activeTab);
+
+  const toggleExpand = (id: number) => {
+    setExpandedUniversityIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+    );
+  };
 
   return (
     <div className="pt-20">
@@ -71,7 +78,7 @@ export default function Universities() {
                   ) : (
                     filteredUniversities?.map(uni => (
                       <div key={uni.id} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow flex flex-col">
-                        <div className="h-20 flex items-center justify-center mb-6 p-4">
+                        <div className="h-32 sm:h-36 flex items-center justify-center mb-6 p-4">
                           {uni.logo ? (
                             <img src={uni.logo} alt={uni.name} className="max-h-full max-w-full object-contain" />
                           ) : (
@@ -86,13 +93,27 @@ export default function Universities() {
                           <span>{uni.country}</span>
                         </div>
                         {uni.description && (
-                          <p className="text-sm text-slate-600 text-center mb-6 line-clamp-3">{uni.description}</p>
+                          <p
+                            className="text-sm text-slate-600 text-center mb-6 break-words whitespace-pre-line"
+                            style={expandedUniversityIds.includes(uni.id) ? undefined : { display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+                          >
+                            {uni.description}
+                          </p>
                         )}
-                        <div className="mt-auto pt-4 flex justify-center">
+                        <div className="mt-auto pt-4 flex flex-col items-center gap-3">
                           {uni.website && (
                             <a href={uni.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 font-medium text-sm flex items-center gap-2">
                               <Globe className="w-4 h-4" /> Visit Website
                             </a>
+                          )}
+                          {uni.description && uni.description.length > 180 && (
+                            <button
+                              type="button"
+                              onClick={() => toggleExpand(uni.id)}
+                              className="text-slate-600 hover:text-primary text-sm font-semibold"
+                            >
+                              {expandedUniversityIds.includes(uni.id) ? "Read less" : "Read more"}
+                            </button>
                           )}
                         </div>
                       </div>

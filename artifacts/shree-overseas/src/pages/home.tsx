@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { useListServices, useListVideos, useListGalleryItems, useListTestimonials } from "@workspace/api-client-react";
+import { useListDestinations, useListServices, useListVideos, useListGalleryItems, useListTestimonials } from "@workspace/api-client-react";
 import { ArrowRight, CheckCircle2, Globe2, GraduationCap, Images, MapPin, Phone, Play, Quote, Star, Sparkles, TrendingUp } from "lucide-react";
 import { MediaLightbox, type MediaLightboxItem } from "@/components/MediaLightbox";
 import { ResponsiveMedia } from "@/components/ResponsiveMedia";
@@ -164,6 +164,7 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  const { data: destinations } = useListDestinations();
   const realApiVideos = apiVideos?.filter(v => v.url && v.url !== "/api/placeholder") ?? [];
   const videosToShow = realApiVideos.length > 0 ? realApiVideos : FALLBACK_VIDEOS;
 
@@ -171,6 +172,23 @@ export default function Home() {
   const row1 = galleryImages.filter((_, i) => i % 2 === 0);
   const row2 = galleryImages.filter((_, i) => i % 2 === 1);
   const approvedTestimonials = (testimonials ?? []).filter((t) => t.isApproved).slice(0, 3);
+  const slugify = (value: string) => value.toLowerCase().replace(/\s+/g, "-");
+  const destinationColors = ["#E63012", "#F97316", "#16A34A", "#E63012", "#F97316", "#16A34A"];
+  const topDestinations = destinations?.length ? destinations.slice(0, 4) : undefined;
+  const destinationCards = topDestinations?.length
+    ? topDestinations.map((dest, idx) => ({
+        name: dest.country,
+        image: dest.image,
+        color: destinationColors[idx % destinationColors.length],
+        href: `/destinations#${slugify(dest.country)}`,
+      }))
+    : [
+        { name: "Canada", image: canadaImg, color: "#E63012", href: "/destinations#canada" },
+        { name: "USA", image: usaImg, color: "#F97316", href: "/destinations#usa" },
+        { name: "UK", image: ukImg, color: "#16A34A", href: "/destinations#uk" },
+        { name: "Australia", image: australiaImg, color: "#E63012", href: "/destinations#australia" },
+      ];
+
   const FLAG_ISO: Record<string, string> = {
     USA: "us",
     UK: "gb",
@@ -396,13 +414,8 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { name: "Canada",    image: canadaImg,    color: "#E63012" },
-              { name: "USA",       image: usaImg,       color: "#F97316" },
-              { name: "UK",        image: ukImg,        color: "#16A34A" },
-              { name: "Australia", image: australiaImg, color: "#E63012" },
-            ].map((dest, idx) => (
-              <Link key={idx} href={`/destinations#${dest.name.toLowerCase()}`}>
+            {destinationCards.map((dest, idx) => (
+              <Link key={`${dest.name}-${idx}`} href={dest.href}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}

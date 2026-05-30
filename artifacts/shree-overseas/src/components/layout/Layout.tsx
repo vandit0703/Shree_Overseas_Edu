@@ -36,7 +36,7 @@ export function Layout({ children }: LayoutProps) {
           <SiWhatsapp className="w-6 h-6" />
         </a>
         <a
-          href="https://instagram.com/shreeoverseasedu"
+          href="https://www.instagram.com/shree_overseaseducation/"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center"

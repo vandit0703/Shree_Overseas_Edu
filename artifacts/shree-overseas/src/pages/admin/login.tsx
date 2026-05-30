@@ -92,10 +92,7 @@ export default function AdminLogin() {
                 Staff
               </button>
             </div>
-            
-            <p className="text-slate-400 text-sm">
-              {role === "admin" ? "Manage all website content" : "View consultation bookings"}
-            </p>
+          
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -146,16 +143,6 @@ export default function AdminLogin() {
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-
-          <div className="mt-6 p-4 bg-slate-900/60 rounded-xl border border-slate-700">
-            <p className="text-xs text-slate-500 text-center">Default credentials</p>
-            <p className="text-xs text-slate-400 text-center mt-1">
-              Admin: <span className="text-slate-300 font-mono">vk</span> / <span className="text-slate-300 font-mono">Vk@77</span>
-            </p>
-            <p className="text-xs text-slate-400 text-center mt-2">
-              Staff: <span className="text-slate-300 font-mono">staff</span> / <span className="text-slate-300 font-mono">Staff@123</span>
-            </p>
-          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useListSuccessStories } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GraduationCap, MapPin, Calendar, Quote, Star } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -25,9 +25,62 @@ const countryFlags: Record<string, string> = {
   Germany: "🇩🇪",
 };
 
+function useCountUp(end: number, duration = 2000, start = false) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!start) {
+      setCount(0);
+      return;
+    }
+
+    let startTime: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * end));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  }, [start, end, duration]);
+
+  return count;
+}
+
 export default function SuccessStories() {
   const { data: stories, isLoading } = useListSuccessStories();
   const [preview, setPreview] = useState<MediaLightboxItem | null>(null);
+  const [expandedStoryIds, setExpandedStoryIds] = useState<number[]>([]);
+  const [statsStarted, setStatsStarted] = useState(false);
+  const statsRef = useRef<HTMLDivElement | null>(null);
+
+  const visasCount = useCountUp(150, 1800, statsStarted);
+  const successRateCount = useCountUp(98, 1800, statsStarted);
+  const countriesCount = useCountUp(15, 1800, statsStarted);
+
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleStoryExpand = (id: number) => {
+    setExpandedStoryIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+    );
+  };
 
   return (
     <div className="pt-20">
@@ -54,18 +107,18 @@ export default function SuccessStories() {
 
       {/* Stats Bar */}
       <div className="bg-primary py-6">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" ref={statsRef}>
           <div className="grid grid-cols-3 gap-8 text-center text-white">
             <div>
-              <p className="text-3xl font-bold">500+</p>
+              <p className="text-3xl font-bold">{visasCount}+ </p>
               <p className="text-sm text-white/80 mt-1">Visas Approved</p>
             </div>
             <div>
-              <p className="text-3xl font-bold">98%</p>
+              <p className="text-3xl font-bold">{successRateCount}%</p>
               <p className="text-sm text-white/80 mt-1">Success Rate</p>
             </div>
             <div>
-              <p className="text-3xl font-bold">30+</p>
+              <p className="text-3xl font-bold">{countriesCount}+ </p>
               <p className="text-sm text-white/80 mt-1">Countries</p>
             </div>
           </div>
@@ -161,9 +214,21 @@ export default function SuccessStories() {
                       {story.story && (
                         <div className="mt-auto bg-slate-50 p-4 rounded-2xl relative">
                           <Quote className="w-5 h-5 text-primary/30 mb-2" />
-                          <p className="text-sm text-slate-600 leading-relaxed italic line-clamp-3">
+                          <p
+                            className="text-sm text-slate-600 leading-relaxed italic break-words whitespace-pre-line"
+                            style={expandedStoryIds.includes(story.id) ? undefined : { display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+                          >
                             {story.story}
                           </p>
+                          {story.story.length > 180 && (
+                            <button
+                              type="button"
+                              onClick={() => toggleStoryExpand(story.id)}
+                              className="mt-3 inline-block text-sm font-semibold text-primary hover:text-primary/80"
+                            >
+                              {expandedStoryIds.includes(story.id) ? "Read less" : "Read more"}
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>

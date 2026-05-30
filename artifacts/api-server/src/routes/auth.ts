@@ -2,11 +2,11 @@ import { Router } from "express";
 
 const router = Router();
 
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "vk";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "Vk@77";
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "Tejas_Sharma";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "Shree@15edu";
 
-const STAFF_USERNAME = process.env.STAFF_USERNAME ?? "staff";
-const STAFF_PASSWORD = process.env.STAFF_PASSWORD ?? "Staff@123";
+const STAFF_USERNAME = process.env.STAFF_USERNAME ?? "Staff";
+const STAFF_PASSWORD = process.env.STAFF_PASSWORD ?? "Shree@5staff";
 
 // Simple in-memory token store (sufficient for development use)
 const validTokens = new Map<string, { role: "admin" | "staff"; username: string }>();

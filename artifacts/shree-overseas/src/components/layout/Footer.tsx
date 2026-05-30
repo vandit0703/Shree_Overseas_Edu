@@ -23,7 +23,7 @@ export function Footer() {
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
                 <span style={{ color: "#E63012" }}>Shree Overseas </span>
-                <span className="bg-gradient-to-br from-slate-900 via-blue-900 to-blue-800 bg-clip-text text-transparent">Education</span>
+                <span style={{ color: "#E63012" }}>Education</span>
               </h2>
               <p className="text-primary text-sm sm:text-base font-semibold mt-1">
                 Global Education Guidance
@@ -117,9 +117,17 @@ export function Footer() {
         <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-500 text-center sm:text-left">
           <p className="mb-2 sm:mb-0">© 2026 Shree Overseas Education. All rights reserved.</p>
           <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-end gap-2 sm:gap-5">
-            <Link href="vanditportfolio.onrender.com" className="hover:text-primary transition-colors">
-              Designed & Developed by Vandit
-            </Link>
+            <p className="text-gray-400 text-sm">
+              Designed & Developed by{" "}
+              <a
+                href="https://vanditportfolio.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-orange-500 hover:text-orange-400 transition-colors"
+              >
+                Vandit Katbamna
+              </a>
+            </p>
           </div>
         </div>
       </div>
