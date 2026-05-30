@@ -11,7 +11,7 @@
     "db:push-force": "node ./scripts/with-env.cjs -- pnpm --filter @workspace/db run push-force",
     "db:check": "node ./scripts/check-db.cjs",
     "uploads:cleanup": "node ./scripts/cleanup-uploads.cjs",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "build": "pnpm run typecheck && pnpm --filter @workspace/shree-overseas run build && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },

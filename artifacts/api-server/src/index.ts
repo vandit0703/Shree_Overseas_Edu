@@ -1,7 +1,8 @@
 // Load environment from .env file BEFORE any other imports
 import dotenv from "dotenv";
 dotenv.config();
-
+console.log("DATABASE_URL =", process.env.DATABASE_URL);
+console.log("cwd =", process.cwd());
 import app from "./app";
 import { logger } from "./lib/logger";
 
