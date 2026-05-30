@@ -78,7 +78,7 @@ export default function StaffConsultations() {
                   </TableCell>
                   <TableCell>
                     <Select value={c.status || "pending"} onValueChange={(val) => handleStatusChange(c.id, val)}>
-                      <SelectTrigger className={`w-32 h-8 ${getStatusColor(c.status)}`}>
+                      <SelectTrigger className={`w-32 h-8 ${getStatusColor(c.status ?? null)}`}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
