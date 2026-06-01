@@ -23,7 +23,7 @@ export function Footer() {
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
                 <span style={{ color: "#E63012" }}>Shree Overseas </span>
-                <span style={{ color: "#E63012" }}>Education</span>
+                <span style={{ color:"rgb(86, 86, 227)" }}>Education</span>
               </h2>
               <p className="text-primary text-sm sm:text-base font-semibold mt-1">
                 Global Education Guidance
