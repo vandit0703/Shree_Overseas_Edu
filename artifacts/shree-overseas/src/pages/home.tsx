@@ -6,22 +6,7 @@ import { useListDestinations, useListServices, useListVideos, useListGalleryItem
 import { ArrowRight, CheckCircle2, Globe2, GraduationCap, Images, MapPin, Phone, Play, Quote, Star, Sparkles, TrendingUp } from "lucide-react";
 import { MediaLightbox, type MediaLightboxItem } from "@/components/MediaLightbox";
 import { ResponsiveMedia } from "@/components/ResponsiveMedia";
-import canadaImg from "@/assets/canada.png";
-import usaImg from "@/assets/usa.png";
-import ukImg from "@/assets/uk.png";
-import australiaImg from "@/assets/australia.png";
 
-import video1 from "@assets/276047_medium_1779358525671.mp4";
-import video2 from "@assets/119289-717336867_medium_1779358525672.mp4";
-import video3 from "@assets/60721-499068724_medium_1779358525672.mp4";
-import video4 from "@assets/24497-344562750_medium_1779358525673.mp4";
-
-const FALLBACK_VIDEOS = [
-  { id: -1, url: video1, title: "Arjun's Canada Journey", thumbnail: null, order: 1 },
-  { id: -2, url: video2, title: "Priya's UK Experience",  thumbnail: null, order: 2 },
-  { id: -3, url: video3, title: "Rahul's Australia Story",thumbnail: null, order: 3 },
-  { id: -4, url: video4, title: "Nisha's USA Dream",      thumbnail: null, order: 4 },
-];
 
 const STATS = [
   { icon: GraduationCap, label: "Students Placed",     end: 100, suffix: "+", color: "#E63012" },
@@ -165,8 +150,7 @@ export default function Home() {
   }, []);
 
   const { data: destinations } = useListDestinations();
-  const realApiVideos = apiVideos?.filter(v => v.url && v.url !== "/api/placeholder") ?? [];
-  const videosToShow = realApiVideos.length > 0 ? realApiVideos : FALLBACK_VIDEOS;
+  const videosToShow = apiVideos?.filter(v => v.url && v.url !== "/api/placeholder") ?? [];
 
   const galleryImages = (galleryItems ?? []).filter(g => g.type === "image" && g.url);
   const row1 = galleryImages.filter((_, i) => i % 2 === 0);
@@ -174,20 +158,13 @@ export default function Home() {
   const approvedTestimonials = (testimonials ?? []).filter((t) => t.isApproved).slice(0, 3);
   const slugify = (value: string) => value.toLowerCase().replace(/\s+/g, "-");
   const destinationColors = ["#E63012", "#F97316", "#16A34A", "#E63012", "#F97316", "#16A34A"];
-  const topDestinations = destinations?.length ? destinations.slice(0, 4) : undefined;
-  const destinationCards = topDestinations?.length
-    ? topDestinations.map((dest, idx) => ({
-        name: dest.country,
-        image: dest.image,
-        color: destinationColors[idx % destinationColors.length],
-        href: `/destinations#${slugify(dest.country)}`,
-      }))
-    : [
-        { name: "Canada", image: canadaImg, color: "#E63012", href: "/destinations#canada" },
-        { name: "USA", image: usaImg, color: "#F97316", href: "/destinations#usa" },
-        { name: "UK", image: ukImg, color: "#16A34A", href: "/destinations#uk" },
-        { name: "Australia", image: australiaImg, color: "#E63012", href: "/destinations#australia" },
-      ];
+  const topDestinations = destinations?.length ? destinations.slice(0, 4) : [];
+  const destinationCards = topDestinations.map((dest, idx) => ({
+    name: dest.country,
+    image: dest.image,
+    color: destinationColors[idx % destinationColors.length],
+    href: `/destinations#${slugify(dest.country)}`,
+  }));
 
   const FLAG_ISO: Record<string, string> = {
     USA: "us",
@@ -397,34 +374,35 @@ export default function Home() {
       )}
 
       {/* ── DESTINATIONS ── */}
-      <section className="py-16 sm:py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full mb-5 border-2"
-              style={{ borderColor: "#16A34A", color: "#16A34A", background: "#F0FDF4" }}>
-              <Globe2 className="w-4 h-4" />
-              Top Destinations
+      {destinationCards.length > 0 && (
+        <section className="py-16 sm:py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full mb-5 border-2"
+                style={{ borderColor: "#16A34A", color: "#16A34A", background: "#F0FDF4" }}>
+                <Globe2 className="w-4 h-4" />
+                Top Destinations
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">
+                Study Destinations <span style={{ color: "#16A34A" }}>Worldwide</span>
+              </h2>
+              <p className="text-base sm:text-lg text-slate-600">
+                Choose from the world's most popular study destinations offering world-class education and incredible career opportunities.
+              </p>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">
-              Study Destinations <span style={{ color: "#16A34A" }}>Worldwide</span>
-            </h2>
-            <p className="text-base sm:text-lg text-slate-600">
-              Choose from the world's most popular study destinations offering world-class education and incredible career opportunities.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {destinationCards.map((dest, idx) => (
-              <Link key={`${dest.name}-${idx}`} href={dest.href}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="group relative rounded-3xl overflow-hidden aspect-[16/11] sm:aspect-[4/5] cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
-                  style={{ border: `3px solid ${dest.color}` }}
-                >
-                  <img src={dest.image} alt={`Study in ${dest.name}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {destinationCards.map((dest, idx) => (
+                <Link key={`${dest.name}-${idx}`} href={dest.href}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="group relative rounded-3xl overflow-hidden aspect-[16/11] sm:aspect-[4/5] cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                    style={{ border: `3px solid ${dest.color}` }}
+                  >
+                    <img src={dest.image} alt={`Study in ${dest.name}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                   {/* Color accent top bar */}
                   <div className="absolute top-0 left-0 w-full h-1.5" style={{ background: dest.color }} />
@@ -450,6 +428,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ── TESTIMONIALS ── */}
       {approvedTestimonials.length > 0 && (
