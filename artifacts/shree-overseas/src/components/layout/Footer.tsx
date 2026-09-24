@@ -110,6 +110,10 @@ export function Footer() {
                   <span className="text-base text-slate-400 group-hover:text-primary transition-colors">+91 88497 90035</span>
                 </a>
               </li>
+              <li className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 group">
+                <Mail className="w-5 h-5 text-primary shrink-0" />
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@shreeoverseasedu.in" className="text-base text-slate-400 group-hover:text-primary transition-colors">info@shreeoverseasedu.in</a>
+              </li>
             </ul>
           </div>
         </div>
